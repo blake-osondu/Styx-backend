@@ -106,7 +106,7 @@ app.post('/api/process-prompt', async (req, res) => {
 
  
   try {
-    const { prompt } = req.body;ß
+    const { prompt } = req.body;
     // Call OpenAI API
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-2024-08-06",
