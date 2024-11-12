@@ -127,6 +127,7 @@ const FlowExecution = z.object({
       response_format: zodResponseFormat.zodResponseFormat(FlowExecution, "flowExecution")
     });
 
+    console.log(completion.choices[0].message);
     const flowExecution = JSON.parse(completion.choices[0].message.content);
 
     console.log(flowExecution);
