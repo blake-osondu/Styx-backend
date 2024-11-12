@@ -66,30 +66,34 @@ app.post('/api/process-prompt', async (req, res) => {
   const InputMap = z.discriminatedUnion("type", [
     z.object({
       type: z.literal("object"),
-      parameters: z.array(z.lazy(() => InputMap))
+      parameters: z.array(z.lazy(() => InputMap)),
+      value: z.record(z.any()).optional()
     }),
     z.object({
       type: z.literal("integer"),
-      name: z.string()
+      name: z.string(),
+      value: z.number().optional()
     }),
     z.object({
       type: z.literal("boolean"),
-      name: z.string()
+      name: z.string(),
+      value: z.boolean().optional()
     }),
     z.object({
       type: z.literal("string"),
-      name: z.string()
+      name: z.string(),
+      value: z.string().optional()
     }),
     z.object({
       type: z.literal("dictionary"),
-      keyType: z.string(),
-      valueType: z.lazy(() => InputMap),
-      name: z.string()
+      name: z.string(),
+      value: z.record(z.any()).optional()
     }),
     z.object({
       type: z.literal("array"),
       name: z.string(),
-      elementType: z.lazy(() => InputMap)
+      elementType: z.lazy(() => InputMap),
+      value: z.array(z.any()).optional()
     })
   ]);
 
@@ -129,7 +133,7 @@ app.post('/api/process-prompt', async (req, res) => {
 
     res.json({ 
       success: true,
-      processedData: flowExecution
+      flowExecution: flowExecution
     });
 
   } catch (error) {
