@@ -113,7 +113,7 @@ const FlowExecution = z.object({
     const { prompt } = req.body;
     // Call OpenAI API
     const completion = await openai.chat.completions.create({
-      model: "gpt-4-0125-preview",  // Make sure to use a supported model
+      model: "gpt-4o-2024-08-06",
       messages: [
         { 
           role: "system", 
