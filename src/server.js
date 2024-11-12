@@ -63,57 +63,57 @@ app.post('/api/query', async (req, res) => {
 app.post('/api/process-prompt', async (req, res) => {
 // ... existing code ...
 
-  const InputMap = z.discriminatedUnion("type", [
-    z.object({
-      type: z.literal("object"),
-      parameters: z.array(z.lazy(() => InputMap)),
-      value: z.record(z.any()).optional()
-    }),
-    z.object({
-      type: z.literal("integer"),
-      name: z.string(),
-      value: z.number().optional()
-    }),
-    z.object({
-      type: z.literal("boolean"),
-      name: z.string(),
-      value: z.boolean().optional()
-    }),
-    z.object({
-      type: z.literal("string"),
-      name: z.string(),
-      value: z.string().optional()
-    }),
-    z.object({
-      type: z.literal("dictionary"),
-      name: z.string(),
-      value: z.record(z.any()).optional()
-    }),
-    z.object({
-      type: z.literal("array"),
-      name: z.string(),
-      elementType: z.lazy(() => InputMap),
-      value: z.array(z.any()).optional()
-    })
-  ]);
+const InputMap = z.discriminatedUnion("type", [
+  z.object({
+    type: z.literal("object"),
+    parameters: z.array(z.lazy(() => InputMap)),
+    value: z.record(z.any()).optional()
+  }),
+  z.object({
+    type: z.literal("integer"),
+    name: z.string(),
+    value: z.number().optional()
+  }),
+  z.object({
+    type: z.literal("boolean"),
+    name: z.string(),
+    value: z.boolean().optional()
+  }),
+  z.object({
+    type: z.literal("string"),
+    name: z.string(),
+    value: z.string().optional()
+  }),
+  z.object({
+    type: z.literal("dictionary"),
+    name: z.string(),
+    value: z.record(z.any()).optional()
+  }),
+  z.object({
+    type: z.literal("array"),
+    name: z.string(),
+    elementType: z.lazy(() => InputMap),
+    value: z.array(z.any()).optional()
+  })
+]).describe("InputMap");
+
+const ExecutionStep = z.object({
+    name: z.string().describe("The name of the execution step"),
+    providedInput: z.array(InputMap).describe("Array of input parameters")
+}).describe("ExecutionStep");
+
+const FlowExecution = z.object({
+    description: z.string().describe("Description of the flow execution"),
+    executionSteps: z.array(ExecutionStep).describe("Array of execution steps")
+}).describe("FlowExecution");
 
 // ... existing code ...
-  const ExecutionStep = z.object({
-      name: z.string(),
-      providedInput: z.array(InputMap)
-  });
 
-  const FlowExecution = z.object({
-      description: z.string(),
-      executionSteps: z.array(ExecutionStep)
-  });
-
- 
   try {
     const { prompt } = req.body;
     // Call OpenAI API
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-2024-08-06",
+      model: "gpt-4-0125-preview",  // Make sure to use a supported model
       messages: [
         { 
           role: "system", 
