@@ -95,17 +95,17 @@ const InputMap = z.discriminatedUnion("type", [
     elementType: z.lazy(() => InputMap),
     value: z.array(z.any()).optional()
   })
-]).describe("InputMap");
+]);
 
 const ExecutionStep = z.object({
     name: z.string().describe("The name of the execution step"),
     providedInput: z.array(InputMap).describe("Array of input parameters")
-}).describe("ExecutionStep");
+});
 
 const FlowExecution = z.object({
     description: z.string().describe("Description of the flow execution"),
     executionSteps: z.array(ExecutionStep).describe("Array of execution steps")
-}).describe("FlowExecution");
+});
 
 // ... existing code ...
 
